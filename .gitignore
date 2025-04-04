@@ -1,0 +1,9 @@
+.idea
+.vscode
+logs
+allure-results
+node_modules
+test-results
+allure-report
+
+.env
