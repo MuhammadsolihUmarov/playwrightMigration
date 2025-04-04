@@ -6,4 +6,5 @@ node_modules
 test-results
 allure-report
 playwright-report
+results
 .env
