@@ -1,0 +1,184 @@
+<testsuites id="" name="" tests="15" failures="4" skipped="0" errors="0" time="81.550103">
+<testsuite name="calculator.spec.ts" timestamp="2025-04-04T14:01:28.240Z" hostname="chromium" tests="3" failures="0" skipped="0" time="20.538" errors="0">
+<testcase name="smoke › should open the calculator URL" classname="calculator.spec.ts" time="5.383">
+</testcase>
+<testcase name="smoke › should add new entities to calculator" classname="calculator.spec.ts" time="7.043">
+</testcase>
+<testcase name="smoke › should correctly add two new instances" classname="calculator.spec.ts" time="8.112">
+</testcase>
+</testsuite>
+<testsuite name="pricing.spec.ts" timestamp="2025-04-04T14:01:28.240Z" hostname="chromium" tests="2" failures="0" skipped="0" time="12.316" errors="0">
+<testcase name="smoke › should open pricing page" classname="pricing.spec.ts" time="5.925">
+</testcase>
+<testcase name="smoke › clicking on Request Quote button redirects to support page" classname="pricing.spec.ts" time="6.391">
+</testcase>
+</testsuite>
+<testsuite name="calculator.spec.ts" timestamp="2025-04-04T14:01:28.240Z" hostname="firefox" tests="3" failures="2" skipped="0" time="98.088" errors="0">
+<testcase name="smoke › should open the calculator URL" classname="calculator.spec.ts" time="27.2">
+</testcase>
+<testcase name="smoke › should add new entities to calculator" classname="calculator.spec.ts" time="35.472">
+<failure message="calculator.spec.ts:19:5 should add new entities to calculator" type="FAILURE">
+<![CDATA[  [firefox] › calculator.spec.ts:19:5 › smoke › should add new entities to calculator ──────────────
+
+    Test timeout of 30000ms exceeded while running "beforeEach" hook.
+
+       6 |     let calculatorPage: CalculatorPage;
+       7 |
+    >  8 |     test.beforeEach(async ({ page }) => {
+         |          ^
+       9 |         calculatorPage = new CalculatorPage(page);
+      10 |         await calculatorPage.open();
+      11 |         await calculatorPage.acceptCookiesIfAppear();
+        at C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\tests\calculator.spec.ts:8:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+      - navigating to "https://cloud.google.com/products/calculator", waiting until "load"
+
+
+       at ..\pageObject\BasePage.ts:7
+
+       5 |
+       6 |     async open(): Promise<this> {
+    >  7 |         await this.page.goto(this.path);
+         |                         ^
+       8 |         return this;
+       9 |     }
+      10 | }
+        at CalculatorPage.open (C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\pageObject\BasePage.ts:7:25)
+        at C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\tests\calculator.spec.ts:10:30
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\calculator-smoke-should-add-new-entities-to-calculator-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\test-results\calculator-smoke-should-add-new-entities-to-calculator-firefox\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="smoke › should correctly add two new instances" classname="calculator.spec.ts" time="35.416">
+<failure message="calculator.spec.ts:26:5 should correctly add two new instances" type="FAILURE">
+<![CDATA[  [firefox] › calculator.spec.ts:26:5 › smoke › should correctly add two new instances ─────────────
+
+    Test timeout of 30000ms exceeded while running "beforeEach" hook.
+
+       6 |     let calculatorPage: CalculatorPage;
+       7 |
+    >  8 |     test.beforeEach(async ({ page }) => {
+         |          ^
+       9 |         calculatorPage = new CalculatorPage(page);
+      10 |         await calculatorPage.open();
+      11 |         await calculatorPage.acceptCookiesIfAppear();
+        at C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\tests\calculator.spec.ts:8:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+      - navigating to "https://cloud.google.com/products/calculator", waiting until "load"
+
+
+       at ..\pageObject\BasePage.ts:7
+
+       5 |
+       6 |     async open(): Promise<this> {
+    >  7 |         await this.page.goto(this.path);
+         |                         ^
+       8 |         return this;
+       9 |     }
+      10 | }
+        at CalculatorPage.open (C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\pageObject\BasePage.ts:7:25)
+        at C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\tests\calculator.spec.ts:10:30
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\calculator-smoke-should-correctly-add-two-new-instances-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\test-results\calculator-smoke-should-correctly-add-two-new-instances-firefox\video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="pricing.spec.ts" timestamp="2025-04-04T14:01:28.240Z" hostname="firefox" tests="2" failures="2" skipped="0" time="65.552" errors="0">
+<testcase name="smoke › should open pricing page" classname="pricing.spec.ts" time="35.519">
+<failure message="pricing.spec.ts:15:5 should open pricing page" type="FAILURE">
+<![CDATA[  [firefox] › pricing.spec.ts:15:5 › smoke › should open pricing page ──────────────────────────────
+
+    Test timeout of 30000ms exceeded while running "beforeEach" hook.
+
+       7 |     let supportPage: SupportPage;
+       8 |
+    >  9 |     test.beforeEach(async ({ page }) => {
+         |          ^
+      10 |         pricingPage = new PricingPage(page);
+      11 |         supportPage = new SupportPage(page);
+      12 |         await pricingPage.open();
+        at C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\tests\pricing.spec.ts:9:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+      - navigating to "https://cloud.google.com/products/pricing", waiting until "load"
+
+
+       at ..\pageObject\BasePage.ts:7
+
+       5 |
+       6 |     async open(): Promise<this> {
+    >  7 |         await this.page.goto(this.path);
+         |                         ^
+       8 |         return this;
+       9 |     }
+      10 | }
+        at PricingPage.open (C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\pageObject\BasePage.ts:7:25)
+        at C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\tests\pricing.spec.ts:12:27
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\pricing-smoke-should-open-pricing-page-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\test-results\pricing-smoke-should-open-pricing-page-firefox\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="smoke › clicking on Request Quote button redirects to support page" classname="pricing.spec.ts" time="30.033">
+<failure message="pricing.spec.ts:20:5 clicking on Request Quote button redirects to support page" type="FAILURE">
+<![CDATA[  [firefox] › pricing.spec.ts:20:5 › smoke › clicking on Request Quote button redirects to support page 
+
+    Test timeout of 30000ms exceeded while running "beforeEach" hook.
+
+       7 |     let supportPage: SupportPage;
+       8 |
+    >  9 |     test.beforeEach(async ({ page }) => {
+         |          ^
+      10 |         pricingPage = new PricingPage(page);
+      11 |         supportPage = new SupportPage(page);
+      12 |         await pricingPage.open();
+        at C:\Users\Muhammadsolih\WebstormProjects\Playwright Playground\Google_Cloud_Project_phase_2\src\tests\pricing.spec.ts:9:10
+
+    Error: browserContext.newPage: Test timeout of 30000ms exceeded.
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="calculator.spec.ts" timestamp="2025-04-04T14:01:28.240Z" hostname="webkit" tests="3" failures="0" skipped="0" time="44.549" errors="0">
+<testcase name="smoke › should open the calculator URL" classname="calculator.spec.ts" time="12.9">
+</testcase>
+<testcase name="smoke › should add new entities to calculator" classname="calculator.spec.ts" time="15.079">
+</testcase>
+<testcase name="smoke › should correctly add two new instances" classname="calculator.spec.ts" time="16.57">
+</testcase>
+</testsuite>
+<testsuite name="pricing.spec.ts" timestamp="2025-04-04T14:01:28.240Z" hostname="webkit" tests="2" failures="0" skipped="0" time="27.09" errors="0">
+<testcase name="smoke › should open pricing page" classname="pricing.spec.ts" time="12.411">
+</testcase>
+<testcase name="smoke › clicking on Request Quote button redirects to support page" classname="pricing.spec.ts" time="14.679">
+</testcase>
+</testsuite>
+</testsuites>
