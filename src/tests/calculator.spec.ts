@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { test } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { CalculatorPage } from '../pageObject/CalculatorPage';
 import { getLastPathSegments } from "../utils/urlUtils";
 
