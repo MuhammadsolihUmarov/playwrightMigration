@@ -25,6 +25,7 @@
     "test:local": "cross-env LOCALE=en npx playwright test --grep test",
     "test:smoke:en": "cross-env LOCALE=en npx playwright test --grep smoke",
     "test:file-upload:en": "cross-env LOCALE=en npx playwright test --grep file-upload",
+    "test:e2e:en": "cross-env LOCALE=en npx playwright test tests/e2e",
     "test:allure:report": "allure generate allure-results --clean -o allure-report",
     "test:allure:open": "npm run test:allure:report && allure open allure-report",
     "clean": "rimraf logs allure-results allure-report"
