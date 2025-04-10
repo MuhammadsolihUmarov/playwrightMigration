@@ -1,6 +1,6 @@
-import { Page } from '@playwright/test';
 import { getText } from '../config/locales';
 import { BasePage } from './BasePage';
+import { Page } from "@playwright/test";
 
 export class CalculatorPage extends BasePage {
     private okCookieButtonLocator = this.page.getByText(getText('okCookie'));
@@ -48,5 +48,28 @@ export class CalculatorPage extends BasePage {
     async getTotalCost(): Promise<string> {
         const cost = await this.totalCostLocator.textContent();
         return cost ? cost.trim() : '';
+    }
+
+    async gotoCalculatorPage() {
+        await this.page.goto('https://cloud.google.com/products/calculator');
+    }
+
+    async openComputeEngine() {
+        await this.page.locator('//i[text()="add"]').first().click();
+        await this.page.locator('//h2[text()="Compute Engine"]').click();
+    }
+
+    async downloadCSVEstimate(downloadPath: string) {
+        const [download] = await Promise.all([
+            this.page.waitForEvent('download'),
+            this.page.getByLabel('Download estimate as .csv').click()
+        ]);
+
+        return download;
+    }
+
+    async getEstimatedCost(): Promise<number> {
+        const text = await this.page.locator('//div[text()="Estimated cost"]/following-sibling::div//label').textContent();
+        return parseFloat(text?.replace(/[^\d.]/g, '') ?? '0');
     }
 }
