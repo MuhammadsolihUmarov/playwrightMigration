@@ -13,8 +13,8 @@ export class CalculatorPage extends BasePage {
         has: this.page.locator('i', { hasText: getText('add')}),
     });
 
-    constructor(page: Page) {
-        super(page, '/products/calculator');
+    constructor(page: Page, path = '/products/calculator?hl=en') {
+        super(page, path);
     }
 
     async acceptCookiesIfAppear(): Promise<this> {
@@ -113,5 +113,4 @@ export class CalculatorPage extends BasePage {
     getShareEstimateDialog(): Locator {
         return this.page.locator('//div[@aria-label="Share Estimate Dialog"]');
     }
-
 }
