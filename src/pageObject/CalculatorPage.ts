@@ -1,6 +1,6 @@
 import { getText } from '../config/locales';
 import { BasePage } from './BasePage';
-import { Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 import { text } from "stream/consumers";
 
 export class CalculatorPage extends BasePage {
@@ -49,10 +49,6 @@ export class CalculatorPage extends BasePage {
     async getTotalCost(): Promise<string> {
         const cost = await this.totalCostLocator.textContent();
         return cost ? cost.trim() : '';
-    }
-
-    async gotoCalculatorPage() {
-        await this.page.goto('https://cloud.google.com/products/calculator');
     }
 
     async openComputeEngine() {
@@ -110,11 +106,12 @@ export class CalculatorPage extends BasePage {
         await this.page.locator('//input[@type="number"]').nth(7).fill(size);
     }
 
-    async setNumberOfCPUs(size: string): Promise<void> {
-        await this.page.locator('//input[@type="number"]').nth(4).fill(size);
+    async clickShareButton() {
+        await this.page.locator('//button[@aria-label="Open Share Estimate dialog"]').click();
     }
 
-    async getInputErrorMessage(): Promise<string> {
-        return await this.page.locator('//div[@class="fVd3X"]/span').textContent()
+    getShareEstimateDialog(): Locator {
+        return this.page.locator('//div[@aria-label="Share Estimate Dialog"]');
     }
+
 }

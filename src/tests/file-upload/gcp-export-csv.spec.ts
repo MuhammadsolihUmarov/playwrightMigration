@@ -16,7 +16,7 @@ test.describe('file-upload', () => {
 
     test('should export Compute Engine estimate as CSV and verify its content', async ({ page }) => {
         const calculator = new CalculatorPage(page);
-        await calculator.gotoCalculatorPage();
+        await calculator.open();
         await calculator.openComputeEngine();
         const download = await calculator.downloadCSVEstimate(downloadPath);
         const filePath = await download.path();
