@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { test } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { CalculatorPage } from '../pageObject/CalculatorPage';
 import { getLastPathSegments } from "../utils/urlUtils";
 
@@ -10,6 +11,17 @@ test.describe('smoke', () => {
         await calculatorPage.open();
         await calculatorPage.acceptCookiesIfAppear();
     });
+
+    test('should estimate the cost of Compute Engine instance with valid inputs', async ({page}) => {
+        await calculatorPage.clickAddEstimate();
+        await calculatorPage.selectComputeEngine();
+
+        await calculatorPage.addInstances(4);
+        await page.waitForTimeout(2000);
+        const uiTotal = await calculatorPage.getEstimatedCost();
+
+        expect(uiTotal).toEqual(698.5);
+    })
 
     test('should open the calculator URL', async ({ page }) => {
         const lastTwo = getLastPathSegments(page.url(), 2);
