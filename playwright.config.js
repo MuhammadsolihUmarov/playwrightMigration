@@ -31,7 +31,14 @@ export default defineConfig({
                 ...devices['iPhone 13'],
                 browserName: 'chromium',
             },
-        }
+        },
+        {
+            name: 'Tablet Chrome',
+            use: {
+                ...devices['iPad (gen 7) landscape'],
+                browserName: 'chromium',
+            },
+        },
         // {
         //     name: 'chromium',
         //     use: { ...devices['Desktop Chrome'] },
