@@ -4,7 +4,7 @@ import RPconfig from "./reportportal.config";
 export default defineConfig({
     testDir: './src/tests',
     timeout: 30000,
-    workers: 4,
+    workers: 11,
     expect: {
         timeout: 5000,
         toMatchSnapshot: {
@@ -22,14 +22,20 @@ export default defineConfig({
         trace: 'on-first-retry',
         video: 'retain-on-failure',
         screenshot: 'only-on-failure',
-        headless: false,
-        viewport: { width: 1280, height: 800 }
+        headless: false
     },
     projects: [
         {
-            name: 'chromium',
-            use: { ...devices['Desktop Chrome'] },
-        },
+            name: 'Mobile Chrome',
+            use: {
+                ...devices['iPhone 13'],
+                browserName: 'chromium',
+            },
+        }
+        // {
+        //     name: 'chromium',
+        //     use: { ...devices['Desktop Chrome'] },
+        // },
         // {
         //     name: 'firefox',
         //     use: { ...devices['Desktop Firefox'] },

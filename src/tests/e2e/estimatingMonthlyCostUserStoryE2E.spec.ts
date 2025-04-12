@@ -43,6 +43,7 @@ test.describe('e2e', () => {
         await page.waitForTimeout(2000);
         let firstUITotal = await calculatorPage.getEstimatedCost();
 
+        await calculatorPage.goBackIntoEstimaes();
         await calculatorPage.clickAddEstimate();
         await calculatorPage.selectComputeEngine();
         await calculatorPage.addInstances(4);

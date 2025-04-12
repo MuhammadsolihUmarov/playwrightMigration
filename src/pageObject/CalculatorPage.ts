@@ -5,10 +5,11 @@ import { text } from "stream/consumers";
 
 export class CalculatorPage extends BasePage {
     private okCookieButtonLocator = this.page.getByText(getText('okCookie'));
-    private addEstimateButtonLocator = this.page.locator('.jirROd');
+    private addEstimateButtonLocator = this.page.locator('//span[text()="Add to estimate"]');
     private configurationBlockLocator = this.page.locator('#ucc-5');
     private computeEngineLocator = this.page.locator('h2', { hasText: getText('computeEngine') });
     private totalCostLocator = this.page.locator('div.KgqeZe label');
+    private goBackLocator = this.page.locator("//button[@aria-label='Go back']");
     private incrementButtonLocator = this.page.locator('button.CXjg4d', {
         has: this.page.locator('i', { hasText: getText('add')}),
     });
@@ -66,8 +67,12 @@ export class CalculatorPage extends BasePage {
     }
 
     async getEstimatedCost(): Promise<number> {
-        const text = await this.page.locator('//div[text()="Estimated cost"]/following-sibling::div//label').textContent();
+        const text = await this.totalCostLocator.textContent();
         return parseFloat(text?.replace(/[^\d.]/g, '') ?? '0');
+    }
+
+    async goBackIntoEstimaes() {
+        await this.goBackLocator.click();
     }
 
     async chooseMachineFamily(type: string): Promise<void> {
