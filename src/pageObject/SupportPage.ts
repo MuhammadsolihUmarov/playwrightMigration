@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { BasePage } from './BasePage.js';
 
 export class SupportPage extends BasePage {
     headerSupportPage = this.page.locator('div.PN0Fre');
