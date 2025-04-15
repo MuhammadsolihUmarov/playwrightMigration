@@ -4,7 +4,7 @@ import RPconfig from "./reportportal.config";
 export default defineConfig({
     testDir: './src/tests',
     timeout: 30000,
-    workers: 4,
+    workers: 20,
     expect: {
         timeout: 5000
     },

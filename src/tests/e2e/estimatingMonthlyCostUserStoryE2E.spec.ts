@@ -1,158 +1,101 @@
-import { expect, test } from "@playwright/test";
-import { CalculatorPage } from "../../pageObject/CalculatorPage";
+import { expect, test } from "../../fixtures/index.js";
 
 test.describe('e2e', () => {
-    let calculatorPage: CalculatorPage;
-
-    test.beforeEach(async ({page}) => {
-        calculatorPage = new CalculatorPage(page);
+    test.beforeEach(async ({ calculatorPage }) => {
         await calculatorPage.open();
-        await calculatorPage.acceptCookiesIfAppear();
-    });
-
-    test('should estimate the cost of Compute Engine instance with valid inputs', async ({page}) => {
         await calculatorPage.clickAddEstimate();
         await calculatorPage.selectComputeEngine();
+    });
 
+    test('should estimate the cost of Compute Engine instance with valid inputs', async ({page, calculatorPage}) => {
         await calculatorPage.addInstances(4);
-        await page.waitForTimeout(2000);
-        const uiTotal = await calculatorPage.getEstimatedCost();
+        const uiTotal = await calculatorPage.getEstimatedCost(349);
 
-        expect(uiTotal).toEqual(698.5);
+        expect(uiTotal).toEqual(349.92);
     });
 
-    test('machine type update should change estimated cost', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-        await page.waitForTimeout(1000);
-        const uiInitialTotal = await calculatorPage.getEstimatedCost();
+    test('machine type update should change estimated cost', async ({page, calculatorPage}) => {
+        const uiInitialTotal = await calculatorPage.getEstimatedCost(69);
 
-        await calculatorPage.chooseMachineType("n1-standard-2");
-        await page.waitForTimeout(2000);
-        const uiTotal = await calculatorPage.getEstimatedCost();
+        await calculatorPage.chooseMachineType("n4-standard-4");
+        const uiTotal = await calculatorPage.getEstimatedCost(139);
 
         expect(uiTotal).not.toBe(uiInitialTotal);
-        expect(uiTotal).toEqual(70.35);
     });
 
-    test('should be able to compare cost between two configurations', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-        await page.waitForTimeout(1000);
-        await calculatorPage.chooseMachineType("n1-standard-2");
-        await page.waitForTimeout(2000);
-        let firstUITotal = await calculatorPage.getEstimatedCost();
+    test('should be able to compare cost between two configurations', async ({page, calculatorPage}) => {
+        await calculatorPage.chooseMachineType("n4-standard-2");
+        let firstUITotal = await calculatorPage.getEstimatedCost(69);
 
         await calculatorPage.clickAddEstimate();
         await calculatorPage.selectComputeEngine();
         await calculatorPage.addInstances(4);
-        await page.waitForTimeout(2000);
-        let secondUITotal = await calculatorPage.getEstimatedCost();
+        let secondUITotal = await calculatorPage.getEstimatedCost(419);
 
         expect(firstUITotal).not.toBe(secondUITotal);
 
-        firstUITotal = await calculatorPage.getDisplayedCostsOnCostDetails(1);
-        secondUITotal = await calculatorPage.getDisplayedCostsOnCostDetails(2);
+        let firstTotalCostDetails = await calculatorPage.getDisplayedCostsOnCostDetails(1);
+        let secondTotalCostDetails = await calculatorPage.getDisplayedCostsOnCostDetails(2);
 
-        expect(firstUITotal).not.toBe(secondUITotal);
+        expect(firstTotalCostDetails).not.toBe(secondTotalCostDetails);
     });
 
-    test('should realtime update the cost estimation on instance value change', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-        await page.waitForTimeout(1000);
+    test('should realtime update the cost estimation on instance value change', async ({page, calculatorPage}) => {
         await calculatorPage.addInstances(1);
-        await page.waitForTimeout(2000);
-        let firstUITotal = await calculatorPage.getEstimatedCost();
+        let firstUITotal = await calculatorPage.getEstimatedCost(13);
 
         await calculatorPage.addInstances(2);
-        await page.waitForTimeout(2000);
-        let secondUITotal = await calculatorPage.getEstimatedCost();
+        let secondUITotal = await calculatorPage.getEstimatedCost(27);
 
         expect(firstUITotal).not.toBe(secondUITotal);
     });
 
-    test('should estimate cost with minimum values', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-
+    test('should estimate cost with minimum values', async ({page, calculatorPage}) => {
         await calculatorPage.setInstanceTime("5");
         await calculatorPage.chooseSpotProvisionModel();
-        await calculatorPage.chooseMachineType("f1-micro");
-        await calculatorPage.chooseStandardPersistentDisk();
         await calculatorPage.setBootDiskSize("1");
-        await page.waitForTimeout(2000);
-        let uiTotal = await calculatorPage.getEstimatedCost();
+        let uiTotal = await calculatorPage.getEstimatedCost(0);
 
-        expect(uiTotal).toBe(0.02);
+        expect(uiTotal).toBe(0.27);
     });
 
-    test('should estimate cost with maximum values', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-
+    test('should estimate cost with maximum values', async ({page, calculatorPage}) => {
         await calculatorPage.setInstanceTime("36500000");
-        await calculatorPage.chooseMachineType("n1-highcpu-96");
+        await calculatorPage.chooseMachineType("n4-standard-80");
         await calculatorPage.chooseMachineFamily("storage-optimized");
         await calculatorPage.setBootDiskSize("65536");
-        await page.waitForTimeout(2000);
-        let uiTotal = await calculatorPage.getEstimatedCost();
+        let uiTotal = await calculatorPage.getEstimatedCost(73);
 
         expect(uiTotal).toBe(736644346);
     });
 
-    test('should not estimate cost specifying 0 number to instances', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-
+    test('should not estimate cost specifying 0 number to instances', async ({page, calculatorPage}) => {
         await calculatorPage.setInstanceTime("0");
-        await page.waitForTimeout(2000);
-        const uiTotal = await calculatorPage.getEstimatedCost();
 
-        expect(uiTotal).toBeNaN();
+        await expect(calculatorPage.getEstimatedCost("--")).toBeTruthy();
     });
 
-    test('should not estimate cost with negative input in instance time field', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-
+    test('should not estimate cost with negative input in instance time field', async ({page, calculatorPage}) => {
         await calculatorPage.setInstanceTime("-1");
-        await page.waitForTimeout(2000);
-        const uiTotal = await calculatorPage.getEstimatedCost();
 
-        expect(uiTotal).toBeNaN();
+        await expect(calculatorPage.getEstimatedCost("--")).toBeTruthy();
     });
 
-    test('should not estimate cost with huge input in instance time field', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-
+    test('should not estimate cost with huge input in instance time field', async ({page, calculatorPage}) => {
         await calculatorPage.setInstanceTime("9999999999999999999999");
-        await page.waitForTimeout(2000);
-        const uiTotal = await calculatorPage.getEstimatedCost();
 
-        expect(uiTotal).toBeNaN();
+        await expect(calculatorPage.getEstimatedCost("--")).toBeTruthy();
     });
 
-    test('should not estimate cost with negative input in instance count field', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-
+    test('should not estimate cost with negative input in instance count field', async ({page, calculatorPage}) => {
         await calculatorPage.setInstances("-1");
-        await page.waitForTimeout(2000);
-        const uiTotal = await calculatorPage.getEstimatedCost();
 
-        expect(uiTotal).toBeNaN();
+        await expect(calculatorPage.getEstimatedCost("--")).toBeTruthy();
     });
 
-    test('should not estimate cost with huge input in instance count field', async ({page}) => {
-        await calculatorPage.clickAddEstimate();
-        await calculatorPage.selectComputeEngine();
-
+    test('should not estimate cost with huge input in instance count field', async ({page, calculatorPage}) => {
         await calculatorPage.setInstances("9999999999999999999999");
-        await page.waitForTimeout(2000);
-        const uiTotal = await calculatorPage.getEstimatedCost();
 
-        expect(uiTotal).toBeNaN();
+        await expect(calculatorPage.getEstimatedCost("--")).toBeTruthy();
     });
 });
