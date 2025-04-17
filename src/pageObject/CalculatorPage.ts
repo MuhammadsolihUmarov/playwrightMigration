@@ -59,7 +59,7 @@ export class CalculatorPage extends BasePage {
         await this.page.locator('//h2[text()="Compute Engine"]').click();
     }
 
-    async downloadCSVEstimate(downloadPath: string) {
+    async downloadCSVEstimate() {
         const [download] = await Promise.all([
             this.page.waitForEvent('download'),
             this.page.getByLabel('Download estimate as .csv').click()

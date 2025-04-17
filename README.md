@@ -42,10 +42,7 @@ src/
 │   └── SupportPage.ts
 ├── utils/            # Utility functions
 │   └── urlUtils.ts   # e.g., getLastPathSegments()
-└── tests/            # Test specs
-    ├── calculator.spec.ts
-    ├── pricing.spec.ts
-    └── support.spec.ts
+
 ```
 
 ---

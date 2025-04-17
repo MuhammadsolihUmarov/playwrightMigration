@@ -1,8 +1,7 @@
 import * as fs from 'fs';
-import * as path from 'path';
-import { expect } from "@playwright/test";
-import { Download } from "@playwright/test";
-
+import { Download, expect } from "@playwright/test";
+import Papa from 'papaparse';
+import * as path from "path";
 
 export class DownloadHelper {
     static cleanup(dirPath: string) {
@@ -15,27 +14,62 @@ export class DownloadHelper {
 
     static validateFileExtension(download: Download, expectedExtension = '.csv') {
         const fileName = download.suggestedFilename();
-        expect(fileName.toLowerCase().endsWith(expectedExtension)).toBeTruthy();
+        expect(
+            fileName.toLowerCase().endsWith(expectedExtension),
+            `Expected file extension "${expectedExtension}", got "${fileName}"`
+        ).toBeTruthy();
     }
 
-    static extractTotalFromCSV(filePath: string): number {
-        const fileContent = fs.readFileSync(filePath, 'utf8');
-        const line = fileContent.split('\n').find(l => l.includes('Total Price:'));
-        if (!line) throw new Error('Total Price line not found in CSV');
-        const columns = line.split(',');
-        return parseFloat(columns[columns.findIndex(c => c.includes('Total Price:')) + 1]);
+    private static parseCSV(filePath: string): Array<Record<string, string>> {
+        const content = fs.readFileSync(filePath, 'utf8');
+        const { data, errors } = Papa.parse<Record<string, string>>(content, {
+            header: true,
+            skipEmptyLines: true,
+        });
+        if (errors.length) {
+            throw new Error(
+                'CSV parse errors:\n' +
+                errors.map(e => `${e.row}: ${e.message}`).join('\n')
+            );
+        }
+        return data;
+    }
+
+    private static detectTotalPriceHeader(headers: string[]): string {
+        const header = headers.find(h => /total[_ ]?price/i.test(h));
+        if (!header) {
+            throw new Error(
+                `No "total price" column found in CSV headers: ${headers.join(', ')}`
+            );
+        }
+        return header;
     }
 
     static validateCSVStructure(filePath: string) {
-        const fileContent = fs.readFileSync(filePath!, 'utf8');
-        const totalPriceLine = fileContent
-            .split('\n')
-            .find(line => line.includes('Total Price:'));
+        const records = this.parseCSV(filePath);
+        expect(records.length, 'CSV should have at least one data row').toBeGreaterThan(0);
 
-        expect(totalPriceLine).toBeTruthy();
+        const headers = Object.keys(records[0]);
+        this.detectTotalPriceHeader(headers);
+    }
 
-        const columns = totalPriceLine.split(',');
-        const csvTotal = parseFloat(columns[columns.findIndex(col => col.includes('Total Price:')) + 1]);
-        return csvTotal;
+    static extractTotalFromCSV(filePath: string): number {
+        const records = this.parseCSV(filePath);
+        const headers = Object.keys(records[0]);
+        const priceCol = this.detectTotalPriceHeader(headers);
+
+        const summaryRow = records.find(r =>
+            typeof r.sku === 'string' && r.sku.trim().startsWith('Total Price:')
+        );
+        if (!summaryRow) {
+            throw new Error(`Cannot find the summary row ("Total Price:") in the CSV`);
+        }
+
+        const rawValue = summaryRow[priceCol]!;
+        const n = parseFloat(rawValue);
+        if (Number.isNaN(n)) {
+            throw new Error(`Invalid number in column "${priceCol}": ${rawValue}`);
+        }
+        return n;
     }
 }
