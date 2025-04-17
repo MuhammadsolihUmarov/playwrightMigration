@@ -22,13 +22,15 @@
     "lint": "eslint --ext .ts,.js src --format stylish",
     "lint:fix": "eslint --fix --ext .ts,.js src --format stylish",
     "test:en": "cross-env LOCALE=en npx playwright test",
-    "test:local": "cross-env LOCALE=en npx playwright test --grep test",
     "test:smoke:en": "cross-env LOCALE=en npx playwright test --grep smoke",
+    "test:file-upload:en": "cross-env LOCALE=en npx playwright test --grep file-upload",
     "test:allure:report": "allure generate allure-results --clean -o allure-report",
     "test:allure:open": "npm run test:allure:report && allure open allure-report",
     "clean": "rimraf logs allure-results allure-report"
   },
   "dependencies": {
-    "eslint-plugin-prettier": "^5.2.6"
+    "csv-parser": "^3.2.0",
+    "eslint-plugin-prettier": "^5.2.6",
+    "papaparse": "^5.5.2"
   }
 }
