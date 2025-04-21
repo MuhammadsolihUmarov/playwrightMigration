@@ -1,15 +1,10 @@
-import { test } from '@playwright/test';
-import { LayoutPage } from '../../pageObject/LayoutPage';
+import { test } from '../../fixtures';
 import { getLocalizationData } from '../../utils/csvReader';
-import { CalculatorPage } from '../../pageObject/CalculatorPage';
 
-getLocalizationData().forEach(({ languageName, url, headerKeywords, footerKeywords }) => {
-    test(`Verify Header and Footer in ${languageName}`, async ({ page }) => {
-        const calculatorPage = new CalculatorPage(page, url);
-        const layout = new LayoutPage(page);
-
+getLocalizationData().forEach(({ languageName, headerKeywords, footerKeywords }) => {
+    test(`should verify header and footer in ${languageName}`, async ({ calculatorPage, layoutPage }) => {
         await calculatorPage.open();
-        await layout.expectHeaderContains(headerKeywords);
-        await layout.expectFooterContains(footerKeywords);
+        await layoutPage.expectHeaderContains(headerKeywords);
+        await layoutPage.expectFooterContains(footerKeywords);
     });
 });
