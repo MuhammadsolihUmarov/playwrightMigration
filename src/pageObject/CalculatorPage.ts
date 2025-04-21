@@ -32,6 +32,7 @@ export class CalculatorPage extends BasePage {
 
     async selectComputeEngine(): Promise<this> {
         await this.computeEngineLocator.first().click();
+        await this.totalCostLocator.waitFor({ state: 'visible' });
         return this;
     }
 
@@ -67,6 +68,7 @@ export class CalculatorPage extends BasePage {
     }
 
     async getEstimatedCost(): Promise<number> {
+        await this.totalCostLocator.waitFor({ state: 'visible' });
         const text = await this.totalCostLocator.textContent();
         return parseFloat(text?.replace(/[^\d.]/g, '') ?? '0');
     }
