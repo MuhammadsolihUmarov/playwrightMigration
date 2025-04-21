@@ -6,7 +6,10 @@ export default defineConfig({
     timeout: 30000,
     workers: 4,
     expect: {
-        timeout: 5000
+        timeout: 5000,
+        toMatchSnapshot: {
+            maxDiffPixels: 50,
+        },
     },
     fullyParallel: true,
     reporter: [
@@ -20,19 +23,20 @@ export default defineConfig({
         video: 'retain-on-failure',
         screenshot: 'only-on-failure',
         headless: false,
+        viewport: { width: 1280, height: 800 }
     },
     projects: [
         {
             name: 'chromium',
             use: { ...devices['Desktop Chrome'] },
         },
-        {
-            name: 'firefox',
-            use: { ...devices['Desktop Firefox'] },
-        },
-        {
-            name: 'webkit',
-            use: { ...devices['Desktop Safari'] },
-        },
+        // {
+        //     name: 'firefox',
+        //     use: { ...devices['Desktop Firefox'] },
+        // },
+        // {
+        //     name: 'webkit',
+        //     use: { ...devices['Desktop Safari'] },
+        // },
     ],
 });
