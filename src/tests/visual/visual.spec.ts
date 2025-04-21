@@ -1,30 +1,23 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../fixtures';
 import { CalculatorPage } from "../../pageObject/CalculatorPage";
 
 test.describe('Visual Regression Tests', () => {
-    let calculatorPage: CalculatorPage;
-
-    test.beforeEach(async ({ page }) => {
-        calculatorPage = new CalculatorPage(page);
-    });
-
-    test('Calculator page matches expected screenshot', async ({ page }) => {
+    test('Calculator page matches expected screenshot', async ({ page, calculatorPage }) => {
         await calculatorPage.open();
-        await page.waitForTimeout(3000);
+        await calculatorPage.waitForPageReady();
 
         expect(await page.screenshot({ fullPage: true })).toMatchSnapshot('full-page.png');
     });
 
-    test('Calculator form matches expected screenshot', async ({ page }) => {
+    test('Calculator form matches expected screenshot', async ({ page, calculatorPage }) => {
         await calculatorPage.open();
 
         await calculatorPage.openComputeEngine();
-        await page.waitForTimeout(3000);
 
         expect(await page.screenshot({ fullPage: true })).toMatchSnapshot('calculator-form.png');
     });
 
-    test.only('Share estimate dialog matches expected screenshot', async () => {
+    test('Share estimate dialog matches expected screenshot', async ({calculatorPage}) => {
         await calculatorPage.open();
         await calculatorPage.openComputeEngine();
         await calculatorPage.clickShareButton();
