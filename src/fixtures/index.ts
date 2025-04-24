@@ -1,4 +1,5 @@
-import { test as base } from '@playwright/test';
+// @ts-ignore
+import { test as base, expect as baseExpect } from '@playwright/test';
 import { LayoutPage } from '../pageObject/LayoutPage';
 import { CalculatorPage } from '../pageObject/CalculatorPage';
 
@@ -15,3 +16,5 @@ export const test = base.extend<Fixtures>({
         await use(new CalculatorPage(page));
     },
 });
+
+export const expect = baseExpect;

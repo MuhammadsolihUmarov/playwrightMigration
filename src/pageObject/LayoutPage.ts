@@ -1,25 +1,30 @@
-import { Page, expect } from '@playwright/test';
+// @ts-ignore
+import { Page } from "@playwright/test";
 
 export class LayoutPage {
     constructor(private page: Page) {}
 
-    async expectHeaderContains(keywords: string[]) {
-        const text = await this.page.locator('.ZUAiPc').innerText();
-        for (const word of keywords) {
-            if (!text.includes(word)) {
-                throw new Error(`❌ Header keyword not found: "${word}"`);
-            }
-        }
+    async getMissingHeaderKeywords(expected: string[]): Promise<string[]> {
+        return this.getMissingSectionKeywords('#ZUAiPc', expected);
     }
 
+    async getMissingFooterKeywords(expected: string[]): Promise<string[]> {
+        return this.getMissingSectionKeywords('#ZCHFDb', expected);
+    }
 
-    async expectFooterContains(keywords: string[]) {
-        const text = await this.page.locator('#ZCHFDb').innerText();
+    private async getMissingSectionKeywords(
+        selector: string,
+        expectedKeywords: string[]
+    ): Promise<string[]> {
+        const allTexts = await this.page.locator(selector).allInnerTexts();
 
-        for (const word of keywords) {
-            if (!text.includes(word)) {
-                throw new Error(`❌ Footer keyword not found: "${word}"`);
-            }
-        }
+        const visibleTexts = new Set<string>(
+            allTexts
+                .flatMap(text => text.split('\n'))
+                .map(t => t.trim())
+                .filter(Boolean)
+        );
+
+        return expectedKeywords.filter(word => !visibleTexts.has(word));
     }
 }
